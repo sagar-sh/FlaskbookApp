@@ -7,23 +7,23 @@ db = SQLAlchemy(app)
 
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(50), nullable=False)
-    author = db.Column(db.String(50), nullable=False)
+    title = db.Column(db.String(100), nullable=False)
+    author = db.Column(db.String(100), nullable=False)
     publication_year = db.Column(db.Integer, nullable=False)
 
 @app.route('/books')
 def books():
-    books_list = Book.query.all()
-    return render_template('books.html', books=books_list)
+    all_books = Book.query.all()
+    return render_template('books.html', books=all_books)
 
 @app.route('/add_book', methods=['GET', 'POST'])
 def add_book():
     if request.method == 'POST':
         title = request.form['title']
         author = request.form['author']
-        publication_year = request.form['publication_year']
+        year = request.form['year']
 
-        new_book = Book(title=title, author=author, publication_year=publication_year)
+        new_book = Book(title=title, author=author, publication_year=year)
         db.session.add(new_book)
         db.session.commit()
 
